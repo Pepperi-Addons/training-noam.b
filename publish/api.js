@@ -2977,7 +2977,7 @@ class MyService {
     createTodo(body) {
         //Verifies that the body contains only the expected field
         const expectedFields = ['Name', 'Description', 'DueDate', 'Completed'];
-        if (!this.isArrayContainsElements(expectedFields, body.keys())) {
+        if (!this.isArrayContainsElements(expectedFields, Object.keys(body))) {
             throw new Error(`Unexpcted field`);
         }
         //validate that all the required fields exist
