@@ -20,6 +20,10 @@ const routes: Routes = [
                 component: AddonComponent,
             },
             {
+                path: 'todos/additem',
+                component: TodoForm
+            },
+            {
                 path: 'todos/:todo_uuid',
                 component: TodoForm
             }

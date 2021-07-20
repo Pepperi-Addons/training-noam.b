@@ -6,6 +6,8 @@ import { PepDialogData, PepDialogService } from '@pepperi-addons/ngx-lib/dialog'
 import { GenericListDataSource } from '../generic-list/generic-list.component';
 import { TodoForm } from '../form/todo-form.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TodosService } from '../../services/todos.service';
+import { async } from 'rxjs';
 
 
 @Component({
@@ -23,9 +25,9 @@ export class AddonComponent implements OnInit {
         public layoutService: PepLayoutService,
         public translate: TranslateService,
         public router: Router,
-        public route: ActivatedRoute
+        public route: ActivatedRoute,
+        public todoService: TodosService
     ) {
-
         this.layoutService.onResize$.subscribe(size => {
             this.screenSize = size;
         });
@@ -37,18 +39,7 @@ export class AddonComponent implements OnInit {
 
     listDataSource: GenericListDataSource = {
         getList: async (state) => {
-            return [
-                {
-                    Key: 'key1',
-                    Field1: 'Hello',
-                    Field2: true
-                },
-                {
-                    Key: 'key1',
-                    Field1: 'World',
-                    Field2: false
-                }
-            ]
+            return this.todoService.getTodos();
         },
 
         getDataView: async () => {
@@ -59,19 +50,33 @@ export class AddonComponent implements OnInit {
                     ScreenSize: 'Landscape'
                   },
                   Type: 'Grid',
-                  Title: '',
+                  Title: 'Todos',
                   Fields: [
                     {
-                        FieldID: 'Field1',
+                        FieldID: 'Name',
                         Type: 'TextBox',
-                        Title: 'Field1',
+                        Title: this.translate.instant('Name'),
                         Mandatory: false,
                         ReadOnly: true
                     },
                     {
-                        FieldID: 'Field2',
+                        FieldID: 'Description',
+                        Type: 'TextBox',
+                        Title: this.translate.instant('Description'),
+                        Mandatory: false,
+                        ReadOnly: true
+                    },
+                    {
+                        FieldID: 'DueDate',
+                        Type: 'DateAndTime',
+                        Title: this.translate.instant('Due date'),
+                        Mandatory: false,
+                        ReadOnly: true
+                    },
+                    {
+                        FieldID: 'Completed',
                         Type: 'Boolean',
-                        Title: 'Field2',
+                        Title: this.translate.instant('completed'),
                         Mandatory: false,
                         ReadOnly: true
                     }
@@ -82,25 +87,54 @@ export class AddonComponent implements OnInit {
                     },
                     {
                       Width: 25
+                    },                     {
+                      Width: 25
+                    },
+                    {
+                      Width: 25
                     }
                   ],
+                  
                   FrozenColumnsCount: 0,
                   MinimumColumnWidth: 0
             }
         },
 
         getActions: async (objs) =>  {
-            return objs.length ? [
-                {
+            const actions = [];
+
+            if (objs.length === 1) {
+                actions.push({
                     title: this.translate.instant("Edit"),
                     handler: async (objs) => {
-                        this.router.navigate([objs[0].Key], {
-                            relativeTo: this.route,
-                            queryParamsHandling: 'merge'
-                        });
+                            this.router.navigate([objs[0].Key], {
+                                relativeTo: this.route,
+                                queryParamsHandling: 'merge'
+                            });
                     }
-                }
-            ] : []
+                });
+            }
+            if (objs.length >= 1){
+                actions.push({
+                    title: this.translate.instant("Delete"),
+                    handler: async (objs) => {+
+                        this.todoService.deleteToDos(objs);
+                    }
+                });
+                actions.push({
+                    title: this.translate.instant("Mark as done"),
+                    handler: async (objs) => {
+                    }
+                });
+            }
+            return actions;
+        },
+
+        getAddHandler: async () => {
+            return this.router.navigate(["./addItem"], {
+                relativeTo: this.route,
+                queryParamsHandling: 'merge'
+            });
         }
     }
 }

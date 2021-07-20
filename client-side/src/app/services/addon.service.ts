@@ -4,6 +4,7 @@ import { PapiClient } from '@pepperi-addons/papi-sdk';
 import { Injectable } from '@angular/core';
 
 import {PepHttpService, PepDataConvertorService, PepSessionService} from '@pepperi-addons/ngx-lib';
+import { ActivatedRoute } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class AddonService {
@@ -30,6 +31,7 @@ export class AddonService {
         const accessToken = this.session.getIdpToken();
         this.parsedToken = jwt(accessToken);
         this.papiBaseURL = this.parsedToken["pepperi.baseurl"]
+        this.addonUUID = "545aea3b-e284-40f2-97b2-9e6dceb0531d"
     }
 
     async get(endpoint: string): Promise<any> {

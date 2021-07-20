@@ -46,6 +46,7 @@ export interface GenericListDataSource {
         title: string;
         handler: (obj: any) => Promise<void>;
     }[]>;
+    getAddHandler(): Promise<any>;
 }
 
 @Component({
@@ -143,6 +144,10 @@ export class GenericListComponent implements OnInit, AfterViewInit {
   onSearchChanged($event) {
     this.searchString = $event.value
     this.reload();
+  }
+
+  addClicked(){
+     this.dataSource.getAddHandler();
   }
 
   async reload() {

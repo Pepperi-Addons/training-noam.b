@@ -26,15 +26,15 @@ export class MyService {
 
     upsertTodo(body) {
         if(body.Key) {
-            this.editTodo(body);
+            return this.editTodo(body);
         }
         else {
-            this.createTodo(body);
+            return this.createTodo(body);
         }
     }
 
     getTodos(options) {
-        return this.papiClient.addons.data.uuid(this.addonUUID).table(TABLE_NAME).find(options);
+        return this.papiClient.addons.data.uuid(this.addonUUID).table(TABLE_NAME).find(options); 
     }
 
     createTodo(body) {
@@ -47,6 +47,10 @@ export class MyService {
         //validate that all the required fields exist
         if(body.Name && body.Description) {
             body.Key = uuid();
+            if (body.DueDate === "" || body.DueDate === '') {
+                body.DueDate = null;
+            }
+
             return this.papiClient.addons.data.uuid(this.addonUUID).table(TABLE_NAME).upsert(body);
         }        
         else {

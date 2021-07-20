@@ -5,6 +5,7 @@ import { AddonService } from '../../services/addon.service';
 import { PepDialogData, PepDialogService } from '@pepperi-addons/ngx-lib/dialog';
 import { GenericListDataSource } from '../generic-list/generic-list.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TodosService } from 'src/app/services/todos.service';
 
 
 @Component({
@@ -22,17 +23,27 @@ export class TodoForm implements OnInit {
         public translate: TranslateService,
         public dialogService: PepDialogService,
         public router: Router,
-        public activatedRoute: ActivatedRoute
+        public activatedRoute: ActivatedRoute,
+        private todosService: TodosService
     ) {
 
         this.layoutService.onResize$.subscribe(size => {
             this.screenSize = size;
         });
-
         this.key = this.activatedRoute.snapshot.params["todo_uuid"];
-        this.loading = false;
-
-
+        this.loading = true;
+        
+        this.todosService.getTodo(this.key).then(obj => {
+            if (obj) {
+                this.obj = obj;
+                
+                if (obj.DueDate === undefined) {
+                    this.obj.DueDate = '';
+                }
+            }
+        
+            this.loading = false;
+        });
     }
 
     mode: 'Edit' | 'Add'
@@ -41,10 +52,17 @@ export class TodoForm implements OnInit {
     loading: boolean = true
     key: string;
 
+    obj = {
+        Name: '',
+        Description: '',
+        DueDate: ''
+    };
+
     ngOnInit(){
     }
 
     goBack() {
+        debugger;
         this.router.navigate(['..'], {
             relativeTo: this.activatedRoute,
             queryParamsHandling: 'preserve'
@@ -56,9 +74,8 @@ export class TodoForm implements OnInit {
     }
 
     saveClicked() {
-        this.dialogService.openDefaultDialog(new PepDialogData({
-            title: 'Saved'
-        }))
+        this.todosService.saveToDo(this.obj);
+        this.goBack();
     }
 
     cancelClicked() {

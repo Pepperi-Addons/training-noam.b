@@ -7,6 +7,7 @@
             </div>
             <div  header-end-content>
                 <ng-content select="[right-buttons]"></ng-content>
+                <pep-button [value]="'Add' | translate" [styleType]="'strong'" (buttonClick)="addClicked()"></pep-button>
             </div>
             <pep-list-actions [sizeType]="inline ? 'sm' : 'md'" [actions]="menuActions" (actionClick)="onMenuItemClicked($event)"></pep-list-actions>
             <pep-list-total [totalRows]="customList ? customList.totalRows : -1"></pep-list-total>

@@ -14,5 +14,4 @@ export async function todos(client: Client, request: Request) {
         throw new Error(`Method ${request.method} not supported`);
         
     }
-};
-
+}
