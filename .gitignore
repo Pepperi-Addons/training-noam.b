@@ -3,3 +3,4 @@
 /publish/editors
 var_sk
 client-side/node_modules
+client-side/node_modules/**
