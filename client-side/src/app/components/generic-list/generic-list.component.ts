@@ -151,6 +151,7 @@ export class GenericListComponent implements OnInit, AfterViewInit {
   }
 
   async reload() {
+    debugger;
       if (this.customList && this.dataSource) {
           this.dataObjects = await this.dataSource.getList({
             searchString: this.searchString

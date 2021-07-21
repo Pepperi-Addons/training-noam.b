@@ -1,9 +1,9 @@
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { PepLayoutService, PepScreenSizeType } from '@pepperi-addons/ngx-lib';
 import { AddonService } from '../../services/addon.service';
 import { PepDialogData, PepDialogService } from '@pepperi-addons/ngx-lib/dialog';
-import { GenericListDataSource } from '../generic-list/generic-list.component';
+import { GenericListComponent, GenericListDataSource } from '../generic-list/generic-list.component';
 import { TodoForm } from '../form/todo-form.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TodosService } from '../../services/todos.service';
@@ -17,6 +17,7 @@ import { async } from 'rxjs';
   providers: [TranslatePipe]
 })
 export class AddonComponent implements OnInit {
+    @ViewChild(GenericListComponent) genericList: GenericListComponent;
 
     screenSize: PepScreenSizeType;
 
@@ -115,15 +116,21 @@ export class AddonComponent implements OnInit {
                 });
             }
             if (objs.length >= 1){
+                debugger;
                 actions.push({
                     title: this.translate.instant("Delete"),
-                    handler: async (objs) => {+
-                        this.todoService.deleteToDos(objs);
+                    handler: async (objs) => {
+                        this.todoService.deleteToDos(objs).then(() => {
+                            this.genericList.reload();
+                        });
                     }
                 });
                 actions.push({
                     title: this.translate.instant("Mark as done"),
                     handler: async (objs) => {
+                        this.todoService.markToDosAsDone(objs).then(() => {
+                            this.genericList.reload();
+                        });
                     }
                 });
             }

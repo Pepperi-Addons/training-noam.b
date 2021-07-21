@@ -29,12 +29,17 @@ export class TodosService {
     this.addonService.papiClient.addons.api.uuid(this.addonService.addonUUID).file('api').func('todos').post(undefined,obj);
   }
 
-  deleteToDos(objs) {
-    if (objs && objs.length >= 1) {
-      objs.forEach(obj => {
-        obj.hidden = true;
-        this.addonService.papiClient.addons.api.uuid(this.addonService.addonUUID).file('api').func('todos').post(undefined,obj);;
-      });
-    }
+  async deleteToDos(objs) {
+    let objsToDelete = {
+      'objs': objs
+    };
+   return this.addonService.papiClient.addons.api.uuid(this.addonService.addonUUID).file('api').func('deleteTodos').post(undefined,objsToDelete);
+  }
+
+  async markToDosAsDone(objs) {
+    let objsToMark = {
+      'objs': objs
+    };
+   return this.addonService.papiClient.addons.api.uuid(this.addonService.addonUUID).file('api').func('markTodosAsDone').post(undefined,objsToMark);
   }
 }
