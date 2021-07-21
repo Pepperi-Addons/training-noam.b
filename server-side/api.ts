@@ -26,3 +26,14 @@ export async function deleteTodos(client: Client, request: Request) {
         
     }
 }
+export async function markTodosAsDone(client: Client, request: Request) {
+    const service = new MyService(client);
+
+     if (request.method === 'POST') {
+        return service.markTodosAsDone(request.body);
+    }
+    else {
+        throw new Error(`Method ${request.method} not supported`);
+        
+    }
+}
