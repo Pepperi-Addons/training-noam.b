@@ -62,8 +62,15 @@ export class MyService {
         return elements.every(v => array.includes(v));
     }
 
-    deleteTodo(body) {
-        return this.editTodo(body);
+    deleteTodos(body) {
+        let objectsToDelete = body["objs"]
+
+        objectsToDelete.forEach(async obj => {
+            obj.Hidden = true;
+            await this.editTodo(obj);
+        });
+        
+        return objectsToDelete
     }
 
     editTodo(body) {

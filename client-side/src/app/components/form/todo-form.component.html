@@ -1,25 +1,35 @@
 <div class="content">
     <pep-top-bar [inline]="false">
         <div header-start-content>
-            <pep-button [value]="'Todos List' | translate" (buttonClick)="backClicked()" [iconName]="'arrow_left_alt'"></pep-button>
+            <h2 class="title">{{ 'Edit to-do entry' | translate}}</h2>
         </div>
         <div  header-end-content>
-            <pep-button [value]="'Cancel' | translate" (buttonClick)="cancelClicked()"></pep-button>
-            <pep-button [value]="'Save' | translate" [styleType]="'strong'" (buttonClick)="saveClicked()"></pep-button>
+            <pep-button [value]="'Back' | translate" (buttonClick)="backClicked()"></pep-button>
+            <pep-button [value]="'Save' | translate" [styleType]="'strong'" (buttonClick)="saveClicked()"></pep-button>  
         </div>
     </pep-top-bar>
-    <h5>{{ 'Define the todo details' | translate}}</h5>
     <br/>
     <div *ngIf="!loading" class="form">
         <div class="grid-container">
             <div class="name">
-                <pep-textbox [(value)]="obj.Name" [disabled]="false" [readonly]="false"></pep-textbox>
+                <td class="subtitle">
+                    <span class="mandatory-mark">*</span>
+                    {{ 'Name' | translate}}
+                </td>
+                <pep-textbox [(value)]="obj.Name" [disabled]="false" [readonly]="false"> </pep-textbox>
             </div>
 
             <div class="desc">
+                <td class="subtitle">
+                    <span class="mandatory-mark">*</span>
+                    {{ 'Description' | translate}}
+                </td>
                 <pep-textbox [(value)]="obj.Description" [disabled]="false" [readonly]="false"></pep-textbox>
             </div>
             <div class="duedate">
+                <td class="subtitle">
+                    {{ 'Due date' | translate}}
+                </td>
                 <pep-date [(value)]="obj.DueDate" [disabled]="false" [readonly]="false"></pep-date>
             </div>
         </div>          
