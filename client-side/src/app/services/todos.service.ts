@@ -30,9 +30,12 @@ export class TodosService {
   }
 
   async deleteToDos(objs) {
-    let objsToDelete = {
-      'objs': objs
-    };
-   this.addonService.papiClient.addons.api.uuid(this.addonService.addonUUID).file('api').func('deleteTodos').post(undefined,objsToDelete);
+    let uuids = objs.map(obj => obj.Key)
+    return this.addonService.papiClient.addons.api.uuid(this.addonService.addonUUID).file('api').func('delete_todos').post(undefined,uuids);
   }
+
+async markToDosAsDone(objs) {
+  let uuids = objs.map(obj => obj.Key)
+  return this.addonService.papiClient.addons.api.uuid(this.addonService.addonUUID).file('api').func('mark_todos_as_done').post(undefined,uuids);
+}
 }

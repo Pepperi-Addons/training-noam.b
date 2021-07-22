@@ -116,7 +116,6 @@ export class AddonComponent implements OnInit {
                 });
             }
             if (objs.length >= 1){
-                debugger;
                 actions.push({
                     title: this.translate.instant("Delete"),
                     handler: async (objs) => {
@@ -128,6 +127,9 @@ export class AddonComponent implements OnInit {
                 actions.push({
                     title: this.translate.instant("Mark as done"),
                     handler: async (objs) => {
+                        this.todoService.markToDosAsDone(objs).then(() => {
+                            this.genericList.reload();
+                        });
                     }
                 });
             }

@@ -63,17 +63,23 @@ export class MyService {
     }
 
     deleteTodos(body) {
-        let objectsToDelete = body["objs"]
-
-        objectsToDelete.forEach(async obj => {
-            obj.Hidden = true;
-            await this.editTodo(obj);
-        });
-        
-        return objectsToDelete
+        return this.updateTodos(body, true, false);
     }
 
-    editTodo(body) {
+    markTodosAsDone(body) {
+        return this.updateTodos(body, false, true);
+    }
+
+    async updateTodos(body, isHidden, shouldMarkAsDone) {
+        let promises = body.map(key => {
+            return this.papiClient.addons.data.uuid(this.addonUUID).table(TABLE_NAME).upsert({Key: key, Hidden: isHidden, Completed: shouldMarkAsDone})
+        });
+
+        const p = await Promise.all(promises);
+        return promises
+    }
+
+    async editTodo(body) {
         if (body.Key) {
             return this.papiClient.addons.data.uuid(this.addonUUID).table(TABLE_NAME).upsert(body)
         }
