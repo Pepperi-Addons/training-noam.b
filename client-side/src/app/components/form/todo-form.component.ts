@@ -73,8 +73,9 @@ export class TodoForm implements OnInit {
     }
 
     saveClicked() {
-        this.todosService.saveToDo(this.obj);
-        this.goBack();
+        this.todosService.saveToDo(this.obj).then(() => {
+            this.goBack();
+        }); 
     }
 
     cancelClicked() {
