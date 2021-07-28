@@ -26,7 +26,7 @@ export class MyService {
 
     upsertTodo(body) {
         if(body.Key) {
-            return this.editTodo(body);
+            return this.editTodos([body]);
         }
         else {
             return this.createTodo(body);
@@ -62,14 +62,15 @@ export class MyService {
         return elements.every(v => array.includes(v));
     }
 
-    deleteTodo(body) {
-        return this.editTodo(body);
-    }
+    async editTodos(body: {Key: string, Hidden: boolean, Completed: boolean}[]): Promise<any> {
+        let promises = body.map(objectToEdit => {
+            if (objectToEdit.Key) {
+                return this.papiClient.addons.data.uuid(this.addonUUID).table(TABLE_NAME).upsert(objectToEdit)
+            }
+        });
 
-    editTodo(body) {
-        if (body.Key) {
-            return this.papiClient.addons.data.uuid(this.addonUUID).table(TABLE_NAME).upsert(body)
-        }
+        const p = await Promise.all(promises);
+        return promises
     }
 
     getAddons(): Promise<InstalledAddon[]> {

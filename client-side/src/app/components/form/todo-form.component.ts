@@ -62,7 +62,6 @@ export class TodoForm implements OnInit {
     }
 
     goBack() {
-        debugger;
         this.router.navigate(['..'], {
             relativeTo: this.activatedRoute,
             queryParamsHandling: 'preserve'
@@ -74,8 +73,9 @@ export class TodoForm implements OnInit {
     }
 
     saveClicked() {
-        this.todosService.saveToDo(this.obj);
-        this.goBack();
+        this.todosService.saveToDo(this.obj).then(() => {
+            this.goBack();
+        }); 
     }
 
     cancelClicked() {
