@@ -15,21 +15,10 @@ export async function todos(client: Client, request: Request) {
         
     }
 }
-export async function delete_todos(client: Client, request: Request) { 
+export async function update_todos(client: Client, request: Request) { 
     const service = new MyService(client);
 
      if (request.method === 'POST') {
-        return service.editTodos(request.body);
-    }
-    else {
-        throw new Error(`Method ${request.method} not supported`);
-    }
-}
-
-export async function mark_todos_as_done(client: Client, request: Request) {
-    const service = new MyService(client);
-    
-    if (request.method === 'POST') {
         return service.editTodos(request.body);
     }
     else {

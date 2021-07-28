@@ -62,7 +62,7 @@ export class MyService {
         return elements.every(v => array.includes(v));
     }
 
-    async editTodos(body): Promise<any> {
+    async editTodos(body: {Key: string, Hidden: boolean, Completed: boolean}[]): Promise<any> {
         let promises = body.map(objectToEdit => {
             if (objectToEdit.Key) {
                 return this.papiClient.addons.data.uuid(this.addonUUID).table(TABLE_NAME).upsert(objectToEdit)

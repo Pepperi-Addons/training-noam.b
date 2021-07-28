@@ -34,7 +34,7 @@ export class TodosService {
       obj.Hidden = true;
       return obj;
     })
-    return this.addonService.papiClient.addons.api.uuid(this.addonService.addonUUID).file('api').func('delete_todos').post(undefined, objectsToDelete);
+    return this.addonService.papiClient.addons.api.uuid(this.addonService.addonUUID).file('api').func('update_todos').post(undefined, objectsToDelete);
   }
 
   async markToDosAsDone(objs) {
@@ -42,6 +42,6 @@ export class TodosService {
       obj.Completed = true;
       return obj;
     })
-    return this.addonService.papiClient.addons.api.uuid(this.addonService.addonUUID).file('api').func('mark_todos_as_done').post(undefined, objectsToMarkAsDone);
+    return this.addonService.papiClient.addons.api.uuid(this.addonService.addonUUID).file('api').func('update_todos').post(undefined, objectsToMarkAsDone);
   }
 }
